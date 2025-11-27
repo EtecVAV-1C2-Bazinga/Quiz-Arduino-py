@@ -284,3 +284,66 @@ def sortear_questoes():
     """Seleciona aleatoriamente 20 perguntas do banco de dados"""
     return random.sample(quiz_data, 20)
 
+# Função que embaralha a sequencia das alternativas - mantendo a resposta certa
+def embaralhar_alternativas(questao):
+
+    """Embaralha o conteúdo das alternativas mas mantém A, B, C, D, E na ordem"""
+
+    # Cria uma cópia das alternativas
+    alternativas = questao["respostas"].copy()
+    
+    # Extrai apenas o conteúdo (remove "A) ", "B) ", etc.)
+
+    conteudos = []
+    for alt in alternativas:
+        # Pega tudo depois do ") " - o conteúdo da alternativa
+        
+        conteudo = alt.split(") ", 1)[1]
+        conteudos.append(conteudo)
+    
+    # Embaralha apenas os conteúdos
+    random.shuffle(conteudos)
+    
+    # Reconstrói as alternativas com as letras na ordem correta
+    alternativas_embaralhadas = []
+    letras = ["A", "B", "C", "D", "E"]
+    
+    for i, letra in enumerate(letras):
+        alternativas_embaralhadas.append(f"{letra}) {conteudos[i]}")
+    
+    # Encontra qual é a nova posição da resposta correta
+    resposta_original_correta = None
+    for alt in questao["respostas"]:
+        if alt.startswith(questao["correta"] + ")"):
+            resposta_original_correta = alt.split(") ", 1)[1]
+            break
+    
+    # Encontra em qual posição (letra) está a resposta correta agora
+    for i, conteudo in enumerate(conteudos):
+        if conteudo == resposta_original_correta:
+            nova_letra_correta = letras[i]
+            break
+    
+    return alternativas_embaralhadas, nova_letra_correta
+
+# Função que exibe as questões e alternativas de forma aleatorias
+def exibir_questao(numero, questao, alternativas_embaralhadas):
+    """Exibe uma questão com suas alternativas embaralhadas"""
+
+    print(f"\nQuestão {numero}: {questao['pergunta']}") # Exibe a questão e seu numero
+
+    print("-" * 60) # Linha criada para o espaçamento
+    
+    for alternativa in alternativas_embaralhadas:
+        print(alternativa) # Exibe as Alternativas agora embaralhadas
+    
+    print("-" * 60)
+
+# Função que verifica se a reposta do Usuario está correta
+def verificar_resposta(resposta_usuario, resposta_correta):
+
+    """Verifica se a resposta do usuário está correta"""
+
+    return resposta_usuario.upper() == resposta_correta # Se a resposta do usuario for iguala a certa, transformando ela em MAIUSCULA
+
+
