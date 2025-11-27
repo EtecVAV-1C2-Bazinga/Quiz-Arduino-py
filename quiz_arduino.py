@@ -234,3 +234,53 @@ quiz_data = [
 ]
 
 import os
+
+# Função que limpa a tela, usada quando necessário. Para deixar melhor visualmente!!
+def limpar_tela():
+    """Limpa a tela do console"""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+# Função de mostrar o menu "Principal"
+def mostrar_menu():
+    """Exibe o menu principal do programa"""
+
+    print("=" * 50) # Usado para dar aquela impressão de uma linha / Separação
+
+    print("          QUIZ INTERATIVO - ARDUINO")
+    print("=" * 50)
+
+    # Opções de 1 a 3, para escolher onde ir no menu
+    print("1 - Responder Quiz")
+    print("2 - Exibir Regras")
+    print("3 - Encerrar Programa")
+    print("=" * 50)
+
+
+# Função de mostrar as regras do quiz
+def mostrar_regras():
+    """Exibe as regras do jogo"""
+
+    # Usando a função de limpar tela, aqui
+    limpar_tela()
+
+    print("=" * 50)
+    print("              REGRAS DO QUIZ")
+    print("=" * 50)
+
+    # Regras em "ul", demonstrando cada regra do quiz / jogo
+    print("• O quiz contém 20 perguntas sobre Arduino")
+    print("• Cada pergunta vale 0,5 ponto")
+    print("• Nota máxima: 10,0 pontos")
+    print("• As perguntas são de múltipla escolha (A-E)")
+    print("• Digite apenas a letra da alternativa")
+    print("• Perguntas e alternativas são embaralhadas")
+    print("• Boa sorte!")
+
+    print("=" * 50)
+    input("Pressione Enter para voltar ao menu...")
+
+# Função que sorteia 20 questões do banco de dados a cima
+def sortear_questoes():
+    """Seleciona aleatoriamente 20 perguntas do banco de dados"""
+    return random.sample(quiz_data, 20)
+
