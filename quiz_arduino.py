@@ -347,3 +347,117 @@ def verificar_resposta(resposta_usuario, resposta_correta):
     return resposta_usuario.upper() == resposta_correta # Se a resposta do usuario for iguala a certa, transformando ela em MAIUSCULA
 
 
+
+# Função que exibe o Resultado do Usuario / sua pontuação no quiz
+def exibir_resultado(pontuacao, total_questoes):
+
+    """Exibe o resultado final do quiz"""
+
+    limpar_tela()
+
+    print("=" * 50)
+    print("              RESULTADO FINAL")
+    print("=" * 50)
+    
+    nota_final = pontuacao * 0.5
+    percentual = (pontuacao / total_questoes) * 100 # Exibe o percentual no quiz / faixa de acerto
+    
+    print(f"Pontuação: {pontuacao}/{total_questoes}")
+    print(f"Nota: {nota_final:.1f}")
+    print(f"Percentual de acertos: {percentual:.1f}%")
+    
+    # Mensagem q mostra dependendo dos acertos do jogador
+    if percentual >= 90:
+        print("Excelente! Você é um expert/gênio em Arduino!")
+    elif percentual >= 70:
+        print("Muito bom! Você conhece até que bem Arduino!")
+    elif percentual >= 50:
+        print("Bom! Mas você consegue mais, continue estudando Arduino! ")
+    else:
+        print("Melhor você tentar refazer! E estude mais sobre Arduino! ")
+    
+    print("=" * 50)
+
+
+def executar_quiz():
+
+    """Função principal que executa o quiz"""
+    limpar_tela()
+
+    print("Iniciando Quiz sobre Arduino...")
+    print("Preparando 20 perguntas aleatórias...")
+    input("\nPressione Enter para começar...")
+    
+    # Sorteia as questões
+    questões_sorteadas = sortear_questoes()
+    pontuacao = 0
+    total_questoes = len(questões_sorteadas)
+    
+    for i, questao in enumerate(questões_sorteadas, 1):
+        limpar_tela()
+        print(f"Progresso: {i}/{total_questoes}") # Monstra onde voce está no quiz
+        
+        # Embaralha as alternativas
+        alternativas_embaralhadas, resposta_correta = embaralhar_alternativas(questao)
+        
+        # Exibe a questão
+        exibir_questao(i, questao, alternativas_embaralhadas)
+        
+        # Obtém resposta do usuário
+        while True:
+
+            try:
+                resposta = input("\nSua resposta (A-E): ").strip().upper()
+
+                if resposta in ['A', 'B', 'C', 'D', 'E']:
+                    break
+                else:
+                    print("❌ Por favor, digite apenas A, B, C, D ou E")
+
+            except KeyboardInterrupt:
+                print("\n\nQuiz interrompido pelo usuário")
+                return
+        
+        # Verifica a resposta
+        if verificar_resposta(resposta, resposta_correta):
+            print("✅ Resposta correta!")
+            pontuacao += 1
+        else:
+            print(f"❌ Resposta incorreta! A correta era: {resposta_correta}") # Mostra a reposta correta 
+        
+        input("\nPressione Enter para continuar...")
+    
+    # Exibe resultado final
+    exibir_resultado(pontuacao, total_questoes)
+    input("\nPressione Enter para voltar ao menu...")
+
+
+# Função principal/main onde o programa vai rodar 
+def main():
+    """Função principal do programa"""
+
+    while True:
+        limpar_tela()
+        mostrar_menu() # Puxando a função menu para mostar ao usuario
+        
+        opcao = input("\nEscolha uma opção (1-3): ").strip() # Remove os espaços e tabs, para não dar problema no código.
+        
+        if opcao == "1":
+            executar_quiz() # Função que o jogo roda principalmente
+
+        elif opcao == "2":
+            mostrar_regras() # Caso escolha a opção 2, ele irá exibir a função das regras
+
+
+        elif opcao == "3":
+            print("\nObrigado por usar o Quiz Arduino, Até mais!")
+            break # Caso escolha o 3, ele irá incerrar o programa, por isso o break
+
+        # Caso coloque uma opção invalida, ele irá denunciar e te orientar o problema
+        else:
+            print("Opção inválida! Por favor, escolha 1, 2 ou 3")
+            input("Pressione Enter para continuar...")
+
+
+if __name__ == "__main__":
+    main()
